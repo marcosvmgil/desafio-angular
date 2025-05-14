@@ -46,7 +46,33 @@ export class CharacterUpdateComponent implements OnInit {
           });
         },
         error: (err) => {
-          console.error('Erro ao buscar personagem:', err);
+          console.error('Erro ao buscar personagem na API:', err);
+
+          // Tentativa de buscar no serviço de persistência
+          const persistedData =
+            this.persistenceService.getTracebilityInfoData();
+          if (persistedData && Array.isArray(persistedData)) {
+            const foundCharacter = persistedData.find(
+              (item: any) => item.value?.id === Number(this.characterId)
+            );
+            if (foundCharacter) {
+              const character = foundCharacter.value;
+              this.characterName = character.name;
+              this.characterForm.patchValue({
+                name: character.name,
+                image: character.image,
+                gender: character.gender,
+                species: character.species,
+                status: character.status,
+              });
+            } else {
+              console.error(
+                'Personagem não encontrado no serviço de persistência.'
+              );
+            }
+          } else {
+            console.error('Dados persistidos inválidos ou inexistentes.');
+          }
         },
       });
     }

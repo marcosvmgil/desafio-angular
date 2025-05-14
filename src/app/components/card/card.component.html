@@ -1,11 +1,6 @@
-<a
-  [routerLink]="['/character', character.id]"
-  style="text-decoration: none; color: inherit"
->
-  <div style="border: 1px solid #ccc; padding: 16px; margin: 8px">
-    <img [src]="character.image" alt="{{ character.name }}" />
-    <p>{{ character.name }}</p>
-    <p>{{ character.gender }}</p>
-    <p>{{ character.species }}</p>
-  </div>
-</a>
+<div (click)="navigateToCharacter()" class="card__container">
+  <img [src]="character.image" alt="{{ character.name }}" class="card__image" />
+  <p class="card__name">{{ character.name }}</p>
+  <p class="card__gender">{{ character.gender }}</p>
+  <p class="card__species">{{ character.species }}</p>
+</div>

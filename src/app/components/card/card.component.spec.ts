@@ -1,28 +1,41 @@
-/* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-
 import { CardComponent } from './card.component';
+import { Router } from '@angular/router';
 
 describe('CardComponent', () => {
   let component: CardComponent;
-  let fixture: ComponentFixture<CardComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ CardComponent ]
-    })
-    .compileComponents();
-  }));
+  let mockRouter: any;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CardComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    mockRouter = {
+      navigate: jest.fn(),
+    };
+
+    component = new CardComponent(mockRouter);
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should not navigate if character.id is undefined', () => {
+    component.character = {}; // no id
+    component.navigateToCharacter();
+
+    expect(mockRouter.navigate).not.toHaveBeenCalled();
+  });
+
+  it('should navigate to character detail page if character.id exists', () => {
+    component.character = { id: 42 };
+
+    component.navigateToCharacter();
+
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/character', 42]);
+  });
+
+  it('should handle navigateToCharacter gracefully when character is nullish', () => {
+    component.character = null as any;
+
+    expect(() => component.navigateToCharacter()).not.toThrow();
+    expect(mockRouter.navigate).not.toHaveBeenCalled();
   });
 });

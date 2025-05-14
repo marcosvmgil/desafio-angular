@@ -3,20 +3,9 @@ module.exports = {
   preset: 'jest-preset-angular',
   setupFilesAfterEnv: ['<rootDir>/src/setup-jest.ts'],
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
-  globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.spec.json',
-      stringifyContentPathRegex: '\\.html$'
-    }
-  },
-  transform: {
-    '^.+\\.(ts|mjs|html|js)$': 'ts-jest',
-  },
-  moduleNameMapper: {
-    '\\.(scss|sass|css|less)$': 'identity-obj-proxy',
-    '\\.html$': '<rootDir>/src/__mocks__/fileMock.js'
-  },
-  transformIgnorePatterns: [
-    'node_modules/(?!(@angular|rxjs|tslib)/)',
-  ],
+  transformIgnorePatterns: ["node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)"],
+  collectCoverage: true,
+  coverageDirectory: "coverage",
+  coverageReporters: ["html", "text-summary", "text", "lcov"],
+  watchPathIgnorePatterns: ["node_modules", "dist"],
 };

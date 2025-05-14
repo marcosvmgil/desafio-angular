@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'card',
@@ -8,7 +9,13 @@ import { Component, Input, OnInit } from '@angular/core';
 export class CardComponent implements OnInit {
   @Input() character: any = {};
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit() {}
+
+  navigateToCharacter() {
+    if (this.character?.id) {
+      this.router.navigate(['/character', this.character.id]);
+    }
+  }
 }

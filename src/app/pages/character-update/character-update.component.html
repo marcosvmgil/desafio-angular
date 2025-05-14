@@ -1,40 +1,75 @@
-<h1>Atualizar Personagem</h1>
-<h2 *ngIf="characterName">Nome: {{ characterName }}</h2>
+<div class="character-update__container">
+  <h1 class="character-update__title">Atualizar Personagem</h1>
+  <h2 *ngIf="characterName" class="character-update__subtitle">
+    Nome: {{ characterName }}
+  </h2>
 
-<form [formGroup]="characterForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="name">Nome:</label>
-    <input id="name" type="text" formControlName="name" />
-  </div>
+  <form
+    [formGroup]="characterForm"
+    (ngSubmit)="onSubmit()"
+    class="character-update__form"
+  >
+    <div class="character-update__form-group">
+      <label for="name" class="character-update__label">Nome:</label>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        class="character-update__input"
+      />
+    </div>
 
-  <div>
-    <label for="image">Imagem (URL):</label>
-    <input id="image" type="text" formControlName="image" />
-  </div>
+    <div class="character-update__form-group">
+      <label for="image" class="character-update__label">Imagem (URL):</label>
+      <input
+        id="image"
+        type="text"
+        formControlName="image"
+        class="character-update__input"
+      />
+    </div>
 
-  <div>
-    <label for="gender">Gênero:</label>
-    <select id="gender" formControlName="gender">
-      <option value="Male">Male</option>
-      <option value="Female">Female</option>
-      <option value="undefined">Undefined</option>
-    </select>
-  </div>
+    <div class="character-update__form-group">
+      <label for="gender" class="character-update__label">Gênero:</label>
+      <select
+        id="gender"
+        formControlName="gender"
+        class="character-update__select"
+      >
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="undefined">Undefined</option>
+      </select>
+    </div>
 
-  <div>
-    <label for="species">Espécie:</label>
-    <input id="species" type="text" formControlName="species" />
-  </div>
+    <div class="character-update__form-group">
+      <label for="species" class="character-update__label">Espécie:</label>
+      <input
+        id="species"
+        type="text"
+        formControlName="species"
+        class="character-update__input"
+      />
+    </div>
 
-  <div>
-    <label for="status">Status:</label>
-    <select id="status" formControlName="status">
-      <option value="Alive">Alive</option>
-      <option value="Dead">Dead</option>
-    </select>
-  </div>
+    <div class="character-update__form-group">
+      <label for="status" class="character-update__label">Status:</label>
+      <select
+        id="status"
+        formControlName="status"
+        class="character-update__select"
+      >
+        <option value="Alive">Alive</option>
+        <option value="Dead">Dead</option>
+      </select>
+    </div>
 
-  <button type="submit" [disabled]="characterForm.invalid">
-    Atualizar Personagem
-  </button>
-</form>
+    <button
+      type="submit"
+      [disabled]="characterForm.invalid"
+      class="character-update__button"
+    >
+      Atualizar Personagem
+    </button>
+  </form>
+</div>

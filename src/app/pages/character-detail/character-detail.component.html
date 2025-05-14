@@ -1,22 +1,50 @@
-<div *ngIf="character">
-  <h1>{{ character.name }}</h1>
-  <img [src]="character.image" alt="{{ character.name }}" />
-  <p><strong>Gender:</strong> {{ character.gender }}</p>
-  <p><strong>Species:</strong> {{ character.species }}</p>
-  <p><strong>Status:</strong> {{ character.status }}</p>
-  <button (click)="navigateToUpdate()">Atualizar</button>
-  <button (click)="openDeleteModal()">Excluir</button>
+<div class="character-detail__container" *ngIf="character">
+  <h1 class="character-detail__name">{{ character.name }}</h1>
+  <img
+    [src]="character.image"
+    alt="{{ character.name }}"
+    class="character-detail__image"
+  />
+  <p class="character-detail__info">
+    <strong>Gender:</strong> {{ character.gender }}
+  </p>
+  <p class="character-detail__info">
+    <strong>Species:</strong> {{ character.species }}
+  </p>
+  <p class="character-detail__info">
+    <strong>Status:</strong> {{ character.status }}
+  </p>
+  <div class="character-detail__actions">
+    <button (click)="navigateToUpdate()" class="character-detail__button">
+      Atualizar
+    </button>
+    <button (click)="openDeleteModal()" class="character-detail__button">
+      Excluir
+    </button>
+  </div>
 </div>
 
 <div class="modal" *ngIf="showDeleteModal">
-  <div class="modal-content">
-    <h2>Confirmar Exclusão</h2>
-    <p>
+  <div class="modal__content">
+    <h2 class="modal__title">Confirmar Exclusão</h2>
+    <p class="modal__text">
       Tem certeza de que deseja excluir o personagem
       <strong>{{ character.name }}</strong
       >?
     </p>
-    <button (click)="confirmDelete()">Sim</button>
-    <button (click)="closeDeleteModal()">Não</button>
+    <div class="modal__actions">
+      <button
+        (click)="confirmDelete()"
+        class="modal__button modal__button--confirm"
+      >
+        Sim
+      </button>
+      <button
+        (click)="closeDeleteModal()"
+        class="modal__button modal__button--cancel"
+      >
+        Não
+      </button>
+    </div>
   </div>
 </div>

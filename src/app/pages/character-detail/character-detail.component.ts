@@ -27,7 +27,20 @@ export class CharacterDetailComponent implements OnInit {
           this.character = res;
         },
         error: (err) => {
-          console.error(err);
+          const persistedData =
+            this.persistenceService.getTracebilityInfoData();
+          if (persistedData && Array.isArray(persistedData)) {
+            const foundCharacter = persistedData.find(
+              (item: any) => item.value?.id === Number(id)
+            );
+            if (foundCharacter) {
+              this.character = foundCharacter.value;
+            } else {
+              console.error(err);
+            }
+          } else {
+            console.error(err);
+          }
         },
       });
     }

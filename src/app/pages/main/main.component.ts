@@ -53,7 +53,7 @@ export class MainComponent implements OnInit {
             );
           } else if (key === 'UPDATE') {
             charactersFromApi = charactersFromApi.map((character: any) =>
-              character.id === value.id ? value : character
+              character.id === Number(value.id) ? value : character
             );
           }
         });

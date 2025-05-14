@@ -5,86 +5,116 @@ import { environment } from '../environments/environment';
 
 describe('GenericRequestService', () => {
   let service: GenericRequestService<any>;
-  let httpClientMock: jest.Mocked<HttpClient>;
+  let httpMock: jest.Mocked<HttpClient>;
+
+  const mockResponse = { data: 'ok' };
+  const apiURI = environment.apiURI;
+  const timeoutValue = environment.timeout;
 
   beforeEach(() => {
-    httpClientMock = {
+    httpMock = {
       get: jest.fn(),
       post: jest.fn(),
       put: jest.fn(),
-    } as unknown as jest.Mocked<HttpClient>;
+    } as any;
 
-    service = new GenericRequestService('test-path', httpClientMock);
+    service = new GenericRequestService<any>('characters', httpMock);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  it('should call getPaginated with correct params', (done) => {
+    httpMock.get.mockReturnValue(of(mockResponse));
+
+    service.getPaginated(2, 'Rick').subscribe((res) => {
+      expect(httpMock.get).toHaveBeenCalledWith(`${apiURI}characters`, {
+        params: { name: 'Rick', page: '2' },
+      });
+      expect(res).toEqual(mockResponse);
+      done();
+    });
   });
 
-  it('should perform a GET request', (done) => {
-    const mockData = { id: 1, name: 'Test' };
-    const params = { name: 'Test', page: '1' };
+  it('should call get with id', (done) => {
+    httpMock.get.mockReturnValue(of(mockResponse));
 
-    httpClientMock.get.mockReturnValue(of(mockData));
+    service.get({}, '123').subscribe((res) => {
+      expect(httpMock.get).toHaveBeenCalledWith(`${apiURI}characters/123`, {
+        params: {},
+      });
+      expect(res).toEqual(mockResponse);
+      done();
+    });
+  });
 
-    service.getPaginated(1, 'Test').subscribe((data) => {
-      expect(data).toEqual(mockData);
-      expect(httpClientMock.get).toHaveBeenCalledWith(
-        `${environment.apiURI}test-path`,
-        { params }
+  it('should call get without id', (done) => {
+    httpMock.get.mockReturnValue(of(mockResponse));
+
+    service.get({ status: 'Alive' }).subscribe((res) => {
+      expect(httpMock.get).toHaveBeenCalledWith(`${apiURI}characters`, {
+        params: { status: 'Alive' },
+      });
+      done();
+    });
+  });
+
+  it('should call post with body and id', (done) => {
+    httpMock.post.mockReturnValue(of(mockResponse));
+
+    const body = { name: 'Morty' };
+
+    service.post(body, '123').subscribe((res) => {
+      expect(httpMock.post).toHaveBeenCalledWith(
+        `${apiURI}characters/123`,
+        body
+      );
+      expect(res).toEqual(mockResponse);
+      done();
+    });
+  });
+
+  it('should call post without id', (done) => {
+    httpMock.post.mockReturnValue(of(mockResponse));
+
+    const body = { name: 'Rick' };
+
+    service.post(body).subscribe((res) => {
+      expect(httpMock.post).toHaveBeenCalledWith(`${apiURI}characters`, body);
+      done();
+    });
+  });
+
+  it('should call put with body and id', (done) => {
+    httpMock.put.mockReturnValue(of(mockResponse));
+
+    const body = { name: 'Rick' };
+
+    service.put(body, '321').subscribe((res) => {
+      expect(httpMock.put).toHaveBeenCalledWith(
+        `${apiURI}characters/321`,
+        body
       );
       done();
     });
   });
 
-  it('should handle errors in GET request', (done) => {
-    const errorMessage = 'Failed to fetch data';
-    const params = { name: 'Test', page: '1' };
+  it('should call put without id', (done) => {
+    httpMock.put.mockReturnValue(of(mockResponse));
 
-    httpClientMock.get.mockReturnValue(
-      throwError(() => new Error(errorMessage))
-    );
+    const body = { name: 'Morty' };
 
-    service.getPaginated(1, 'Test').subscribe({
-      next: () => fail('Should have failed with an error'),
-      error: (error) => {
-        expect(error.message).toBe(errorMessage);
-        expect(httpClientMock.get).toHaveBeenCalledWith(
-          `${environment.apiURI}test-path`,
-          { params }
-        );
+    service.put(body).subscribe((res) => {
+      expect(httpMock.put).toHaveBeenCalledWith(`${apiURI}characters`, body);
+      done();
+    });
+  });
+
+  it('should propagate errors from getPaginated', (done) => {
+    httpMock.get.mockReturnValue(throwError(() => new Error('API Error')));
+
+    service.getPaginated(1, 'Summer').subscribe({
+      error: (err) => {
+        expect(err.message).toBe('API Error');
         done();
       },
-    });
-  });
-
-  it('should perform a POST request', (done) => {
-    const mockData = { id: 1, name: 'Test' };
-    const body = { name: 'Test' };
-    httpClientMock.post.mockReturnValue(of(mockData));
-
-    service.post(body).subscribe((data) => {
-      expect(data).toEqual(mockData);
-      expect(httpClientMock.post).toHaveBeenCalledWith(
-        `${environment.apiURI}test-path`,
-        body
-      );
-      done();
-    });
-  });
-
-  it('should perform a PUT request', (done) => {
-    const mockData = { id: 1, name: 'Updated Test' };
-    const body = { name: 'Updated Test' };
-    httpClientMock.put.mockReturnValue(of(mockData));
-
-    service.put(body, '1').subscribe((data) => {
-      expect(data).toEqual(mockData);
-      expect(httpClientMock.put).toHaveBeenCalledWith(
-        `${environment.apiURI}test-path/1`,
-        body
-      );
-      done();
     });
   });
 });

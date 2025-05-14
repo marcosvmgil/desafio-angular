@@ -29,6 +29,8 @@ export class CharacterCreateComponent implements OnInit {
 
   onSubmit() {
     if (this.characterForm.valid) {
+      let validForm = this.characterForm.value;
+      validForm.id = Math.floor(Math.random() * 10000000000000);
       this.persistenceService.savetracebilityInfoData(
         'CREATE',
         this.characterForm.value
