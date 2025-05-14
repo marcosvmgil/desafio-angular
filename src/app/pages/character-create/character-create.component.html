@@ -1,0 +1,61 @@
+<h1>Criar Personagem</h1>
+<form [formGroup]="characterForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="name">Nome:</label>
+    <input id="name" type="text" formControlName="name" />
+    <div
+      *ngIf="
+        characterForm.get('name')?.invalid && characterForm.get('name')?.touched
+      "
+    >
+      <small>Nome é obrigatório.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="image">Imagem (URL):</label>
+    <input id="image" type="text" formControlName="image" />
+    <div
+      *ngIf="
+        characterForm.get('image')?.invalid &&
+        characterForm.get('image')?.touched
+      "
+    >
+      <small>Imagem é obrigatória.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="gender">Gênero:</label>
+    <select id="gender" formControlName="gender">
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="undefined">Undefined</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="species">Espécie:</label>
+    <input id="species" type="text" formControlName="species" />
+    <div
+      *ngIf="
+        characterForm.get('species')?.invalid &&
+        characterForm.get('species')?.touched
+      "
+    >
+      <small>Espécie é obrigatória.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="status">Status:</label>
+    <select id="status" formControlName="status">
+      <option value="Alive">Alive</option>
+      <option value="Dead">Dead</option>
+    </select>
+  </div>
+
+  <button type="submit" [disabled]="characterForm.invalid">
+    Criar Personagem
+  </button>
+</form>

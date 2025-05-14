@@ -1,0 +1,28 @@
+<div class="search__container">
+  <form [formGroup]="searchForm">
+    <input
+      type="text"
+      formControlName="searchTerm"
+      placeholder="Search characters..."
+      class="search__input"
+    />
+  </form>
+</div>
+
+<div class="create__container">
+  <button (click)="navigateTo('create')">Criar</button>
+</div>
+
+<div class="card__container">
+  <card *ngFor="let character of characters()" [character]="character"></card>
+</div>
+
+<div class="pagination">
+  <button (click)="previousPage()" [disabled]="currentPage() === 1">
+    Previous
+  </button>
+  <span>Page {{ currentPage() }} of {{ totalPages() }}</span>
+  <button (click)="nextPage()" [disabled]="currentPage() === totalPages()">
+    Next
+  </button>
+</div>

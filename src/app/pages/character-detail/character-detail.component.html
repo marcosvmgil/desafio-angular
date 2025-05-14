@@ -1,0 +1,22 @@
+<div *ngIf="character">
+  <h1>{{ character.name }}</h1>
+  <img [src]="character.image" alt="{{ character.name }}" />
+  <p><strong>Gender:</strong> {{ character.gender }}</p>
+  <p><strong>Species:</strong> {{ character.species }}</p>
+  <p><strong>Status:</strong> {{ character.status }}</p>
+  <button (click)="navigateToUpdate()">Atualizar</button>
+  <button (click)="openDeleteModal()">Excluir</button>
+</div>
+
+<div class="modal" *ngIf="showDeleteModal">
+  <div class="modal-content">
+    <h2>Confirmar Exclusão</h2>
+    <p>
+      Tem certeza de que deseja excluir o personagem
+      <strong>{{ character.name }}</strong
+      >?
+    </p>
+    <button (click)="confirmDelete()">Sim</button>
+    <button (click)="closeDeleteModal()">Não</button>
+  </div>
+</div>
